@@ -18,16 +18,19 @@ The result? I used this to research a competitor's best-performing pages, built 
 You: /seoagi "best project management tools 2026"
 
 SEO-AGI:
-  1. Pulls SERP top 10 via DataForSEO
-  2. Parses competitor content (word count, headings, topics covered)
-  3. Extracts People Also Ask questions
-  4. Pulls related keywords with search volumes
-  5. Detects search intent (informational vs commercial vs transactional)
-  6. Generates a data-driven content brief
-  7. Writes the complete page (Markdown + YAML frontmatter)
-  8. Adds FAQ section from real PAA data
-  9. Generates JSON-LD schema markup
-  10. Validates against a quality checklist
+  1.  Pulls SERP top 10 via DataForSEO
+  2.  Parses competitor content (word count, headings, topics covered)
+  3.  Extracts People Also Ask questions
+  4.  Pulls related keywords with search volumes
+  5.  Detects search intent (informational vs commercial vs transactional)
+  6.  Generates a data-driven content brief
+  7.  Writes the complete page (Markdown + YAML frontmatter)
+  8.  Adds 200-char AI Summary Nugget for LLM citation
+  9.  Adds FAQ section from real PAA data
+  10. Generates JSON-LD schema markup + inline RDFa entities
+  11. Validates every claim against 2+ sources (Entity Consensus)
+  12. Validates against 28-point quality checklist
+  13. Prints scorecard so you see exactly what passed
 ```
 
 For rewrites, point it at any URL. It compares your page against the current top 3 ranking competitors, identifies exactly what you're missing, and rewrites with a change summary explaining every edit.
@@ -47,6 +50,8 @@ This isn't a wrapper around "write me an SEO article." The skill encodes strateg
 - Internal linking suggestions based on actual site data from GSC
 
 **GEO / LLM SEO (Generative Engine Optimization)**
+- 200-char AI Summary Nugget at top of every page, designed for Perplexity/Gemini/ChatGPT to cite as a consensus source
+- 500-token chunk architecture matching Google AI's retrieval window
 - Content structured for AI citation (Perplexity, ChatGPT, Google AI Overviews)
 - Entity-rich writing that LLMs can extract and reference
 - Depth-over-length philosophy (comprehensive coverage that becomes the authoritative source)
@@ -56,25 +61,52 @@ This isn't a wrapper around "write me an SEO article." The skill encodes strateg
 - Off-page sequencing: establish third-party brand footprint before on-page SEO
 - Reddit subdomain indexing: seed entity consensus across indexed Reddit layers
 - Topical circle enforcement: stay inside your core service topic to avoid diluting AI authority signals
+- Recursive fact-checking: every claim validated against 2+ high-ranking sources for Entity Consensus
+- Spam resilience: technical relevance density prioritized over "human tone" in quality scoring
 
 **Local / GBP Optimization**
 - Ask Maps & conversational GBP optimization (structured data that answers "who has X available?")
 - Holiday/exception hours, discrete service items, pre-populated Q&A
 - GBP fields treated as AEO markup, not optional admin work
+- Map traffic shifting: internal links from high-traffic informational pages to map embeds to boost local engagement signals
 
-**The quality checklist every page runs through:**
-- Title tag <60 chars with target keyword? Check.
-- Meta description <155 chars with CTA? Check.
-- Single H1 mirroring the title? Check.
-- Logical H2 > H3 hierarchy? Check.
-- At least 3 PAA questions answered? Check.
-- Specific data/statistics (not vague claims)? Check.
-- JSON-LD schema appropriate to page type? Check.
+**Content Quality Signals (2026 protocols)**
+- Mandatory Original Research / Data Experiment block in every page (Google's top E-E-A-T signal: Experience)
+- Verification tagging system: every claim tagged with `{{VERIFY}}`, `{{RESEARCH NEEDED}}`, or `{{SOURCE NEEDED}}`
+- "Not For You" block: honest section telling readers when this option is a bad fit (trust signal competitors skip)
+- Information Gain Test: every page must contain content not found in the top 10 Google results
+
+**The 28-point quality checklist every page runs through:**
+- Information gain over top 10 Google results? Check.
+- Reddit Test: would a practitioner upvote this? Check.
+- Core answer in first 150 words? Check.
+- Fast-scan summary within first 200 words? Check.
+- 2+ hard operational Prove-It facts? Check.
+- Real HTML tables (not bullet lists)? Check.
+- Every section doing a unique job (no repetition)? Check.
+- All specific numbers tagged with `{{VERIFY}}`? Check.
+- All citations specific and traceable? Check.
+- "Not For You" block present? Check.
+- 500-token chunk architecture? Check.
+- No banned phrases or patterns? Check.
 - Word count within competitive range? Check.
-- No keyword stuffing? Check.
-- Every piece of content inside the site's core topical circle? Check.
+- JSON-LD schema block matching page type? Check.
+- FAQ section with 3+ PAA questions? Check.
+- Hub/spoke internal links? Check.
+- Title tag <60 chars with target keyword? Check.
+- Meta description <155 chars with value prop? Check.
+- Content inside site's core topical circle? Check.
+- `reddit_test` and `information_gain` in frontmatter? Check.
+- Single H1 tag only? Check.
+- No exact-match keyword in meta description? Check.
+- No keyword stuffing in H2/H3/H4 tags? Check.
+- Image alt text descriptive, not keyword-stuffed? Check.
+- AI Summary Nugget (200-char) at top of page? Check.
+- Original Research / Data Experiment block present? Check.
+- Map-to-informational internal link (local pages)? Check.
+- Every claim validated against 2+ sources? Check.
 
-Pages scoring below 80% get flagged with specific items to fix. Below 60% = rewrite.
+Pages scoring below 22/28 get flagged with specific items to fix. The scorecard is printed at the end of every output so you see exactly what passed.
 
 ---
 
