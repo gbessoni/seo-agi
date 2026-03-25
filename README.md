@@ -1,10 +1,36 @@
-# SEO-AGI
+# SEO-AGI v1.3.0
 
 ### One command. Competitive data in. Ranking pages out.
+
+```
+claude install-skill gbessoni/seo-agi
+```
 
 Most SEO tools tell you what's wrong with your site. This one writes the pages.
 
 `/seoagi "airport parking JFK"` pulls the current SERP, analyzes what's ranking, finds the gaps in their content, and writes you a complete page -- with the heading structure, depth, FAQ section, and schema markup that actually competes. Not thin content. Not keyword-stuffed filler. Pages backed by live data from the tools the pros use.
+
+**New in v1.3.0 -- 2026 SEO Protocols:**
+- **AI Summary Nuggets** -- every page opens with a 200-character fact-dense block designed for Perplexity/Gemini/ChatGPT to cite as a consensus source. Position zero for LLM retrieval.
+- **Original Research Block** -- mandatory data experiment or first-hand observation section. Google's highest-priority E-E-A-T signal: Experience. Pages without original research cap at 20/28.
+- **Map Traffic Shifting** -- internal links from high-traffic informational pages to map embeds, shifting engagement signals toward local intent.
+- **Spam Resilience** -- quality scoring now prioritizes technical relevance density over "human tone." Factually perfect content is not downgraded for sounding clinical.
+- **Recursive Fact-Checking** -- every claim validated against 2+ high-ranking sources for Entity Consensus before delivery.
+- **28-point quality checklist** with mandatory printed scorecard at the end of every output.
+
+**New in v1.2.0 -- Anti-Spam Ranking Signals:**
+- Single H1 rule, no exact-match keyword in meta descriptions or subheadings
+- No keyword-stuffed alt text, no duplicate content
+- Internal linking requirements, broken backlink awareness
+- Interactive elements (calculators, widgets) to defend against AI Overview traffic loss
+
+**New in v1.1.0 -- GEO Framework Additions:**
+- RAG Targeting: zero-volume long-tail queries that "train" AI to cite your domain
+- Topical Circle Audit: stay inside your core service topic or dilute AI authority
+- Off-Page Sequencing: establish third-party brand footprint before on-page SEO
+- Reddit Subdomain Indexing: seed entity consensus across indexed Reddit layers
+- Ask Maps / Conversational GBP Optimization
+- FAQ/PAA section and JSON-LD schema now mandatory in every output
 
 **I built this because I got tired of the gap between "SEO audit" and "published page."** I've been doing SEO for 20+ years in ground transportation (1M+ bookings, 2M+ rides across my companies). The workflow was always the same: pull SERP data, analyze competitors, find gaps, write brief, write page, add schema, publish. Over and over. So I turned that entire workflow into a single skill that any AI agent can execute.
 
