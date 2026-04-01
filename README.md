@@ -3,7 +3,7 @@
 ### One command. Competitive data in. Ranking pages out.
 
 ```
-claude install-skill gbessoni/seo-agi
+claude install-skill gbessoni/on-page-agent
 ```
 
 Most SEO tools tell you what's wrong with your site. This one writes the pages.
@@ -174,22 +174,22 @@ Pick your platform:
 
 Or install via CLI:
 ```bash
-claude install-skill gbessoni/seo-agi
+claude install-skill gbessoni/on-page-agent
 ```
 
 **OpenClaw:**
 ```bash
-git clone https://github.com/gbessoni/seo-agi.git ~/.claude/skills/seo-agi
+git clone https://github.com/gbessoni/on-page-agent.git ~/.claude/skills/seo-agi
 ```
 
 **Codex:**
 ```bash
-git clone https://github.com/gbessoni/seo-agi.git ~/.codex/skills/seo-agi
+git clone https://github.com/gbessoni/on-page-agent.git ~/.codex/skills/seo-agi
 ```
 
 **Manual (any platform):**
 ```bash
-git clone https://github.com/gbessoni/seo-agi.git ~/.claude/skills/seo-agi
+git clone https://github.com/gbessoni/on-page-agent.git ~/.claude/skills/seo-agi
 ```
 
 ### Step 2: Install Python dependency
