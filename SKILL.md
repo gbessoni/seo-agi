@@ -1,5 +1,5 @@
 ---
-name: seo-agi
+name: seobuild-onpage
 version: 1.5.0
 description: >
   Write SEO pages that rank on Google AND get cited by LLMs. Uses live SERP data,

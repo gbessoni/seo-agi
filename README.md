@@ -1,14 +1,22 @@
-# SEO-AGI v1.4.0
+# seobuild-onpage v1.5.0
 
 ### One command. Competitive data in. Ranking pages out.
 
 ```
-claude install-skill gbessoni/on-page-agent
+claude install-skill gbessoni/seobuild-onpage
 ```
 
 Most SEO tools tell you what's wrong with your site. This one writes the pages.
 
 `/seoagi "airport parking JFK"` pulls the current SERP, analyzes what's ranking, finds the gaps in their content, and writes you a complete page -- with the heading structure, depth, FAQ section, and schema markup that actually competes. Not thin content. Not keyword-stuffed filler. Pages backed by live data from the tools the pros use.
+
+**New in v1.5.0 -- Forensic SEO Protocols:**
+- **QDD Vulnerability Check** -- UGC (Instagram, Pinterest, Reddit) ranking for a commercial keyword is a structural gap, not a signal to avoid. Flag as HIGH_CONFIDENCE_TAKEOVER.
+- **Site Over Page Rule** -- generalist competitors ranking with one page are vulnerable to specialist site architecture. Niche Site Pivot trigger fires when 2/3 top results are generalist pages.
+- **Query Fan-Out (QFO) Facet Coverage** -- each 500-token chunk now targets a specific AI sub-query. 40% of future traffic arrives via AI fan-out from a single user prompt.
+- **Forensic EMQ Check** -- EMQ in H1 is conditionally required when 2/3 top competitors use it. Competitive context overrides the default entity-based heading rule.
+- **Orcas One CVR Modeling** -- keywords now ranked by estimated conversion value, not raw volume. Position 1 at 4.5% CVR vs position 7 at 2%.
+- **38-point quality checklist** with QDD, Site vs. Page, EMQ ratio, and QFO facet checks.
 
 **New in v1.4.0 -- March 2026 Update Protocols:**
 - **NavBoost Geographic Click Relevance** -- pages now reranked by geographic click patterns. Local pages require neighborhood-level specificity, not just city names. Observed across SEO X community testing.
@@ -112,7 +120,7 @@ This isn't a wrapper around "write me an SEO article." The skill encodes strateg
 - "Not For You" block: honest section telling readers when this option is a bad fit (trust signal competitors skip)
 - Information Gain Test: every page must contain content not found in the top 10 Google results
 
-**The 28-point quality checklist every page runs through:**
+**The 38-point quality checklist every page runs through:**
 - Information gain over top 10 Google results? Check.
 - Reddit Test: would a practitioner upvote this? Check.
 - Core answer in first 150 words? Check.
@@ -142,7 +150,12 @@ This isn't a wrapper around "write me an SEO article." The skill encodes strateg
 - Map-to-informational internal link (local pages)? Check.
 - Every claim validated against 2+ sources? Check.
 
-Pages scoring below 22/28 get flagged with specific items to fix. The scorecard is printed at the end of every output so you see exactly what passed.
+- QDD check run -- UGC in top 10 flagged or cleared? Check.
+- Site vs. Page audit -- competitor type identified? Check.
+- Forensic EMQ ratio checked -- applied correctly? Check.
+- Each 500-token chunk targets a distinct QFO facet? Check.
+
+Pages scoring below 30/38 get flagged with specific items to fix. The scorecard is printed at the end of every output so you see exactly what passed.
 
 ---
 
@@ -174,22 +187,22 @@ Pick your platform:
 
 Or install via CLI:
 ```bash
-claude install-skill gbessoni/on-page-agent
+claude install-skill gbessoni/seobuild-onpage
 ```
 
 **OpenClaw:**
 ```bash
-git clone https://github.com/gbessoni/on-page-agent.git ~/.claude/skills/seo-agi
+git clone https://github.com/gbessoni/seobuild-onpage.git ~/.claude/skills/seo-agi
 ```
 
 **Codex:**
 ```bash
-git clone https://github.com/gbessoni/on-page-agent.git ~/.codex/skills/seo-agi
+git clone https://github.com/gbessoni/seobuild-onpage.git ~/.codex/skills/seo-agi
 ```
 
 **Manual (any platform):**
 ```bash
-git clone https://github.com/gbessoni/on-page-agent.git ~/.claude/skills/seo-agi
+git clone https://github.com/gbessoni/seobuild-onpage.git ~/.claude/skills/seo-agi
 ```
 
 ### Step 2: Install Python dependency
@@ -293,7 +306,7 @@ I've been running this workflow manually for 20 years across ParkingAccess.com (
 4. Add the technical SEO (schema, meta, structure)
 5. Publish and move on
 
-seo-agi is that pattern, automated. The 20 years of pattern recognition compressed into a SKILL.md file, backed by live data APIs, running inside a super agent that can decompose and parallelize the work.
+seobuild-onpage is that pattern, automated. The 20 years of pattern recognition compressed into a SKILL.md file, backed by live data APIs, running inside a super agent that can decompose and parallelize the work.
 
 It's not AI replacing SEO expertise. It's SEO expertise finally having the right delivery mechanism.
 
