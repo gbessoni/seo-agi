@@ -1,6 +1,6 @@
 ---
 name: seo-agi
-version: 1.4.0
+version: 1.5.0
 description: >
   Write SEO pages that rank on Google AND get cited by LLMs. Uses live SERP data,
   500-token chunk architecture, and the Reddit Test quality gate.
@@ -105,6 +105,19 @@ If the user has Ahrefs or SEMRush MCP servers connected, use them to supplement 
 | 4 | GSC | Owned query performance, CTR, position, cannibalization |
 | 5 | WebSearch | Fallback research when no API keys available |
 
+### Conversion Rate Modeling (Orcas One Study)
+
+When estimating traffic value for a keyword opportunity, apply CVR modeling based on the Orcas One dataset (11M+ data points across organic search). Position and intent both affect conversion rate, not just click volume.
+
+| SERP Position | Avg CTR | Avg CVR (commercial intent) | Notes |
+|---|---|---|---|
+| 1 | ~28% | 3-5% | Combined effect: highest value |
+| 2-3 | ~12% | 2-4% | Still strong, often undervalued |
+| 4-10 | ~3-8% | 1-3% | High volume needed to compensate |
+| AI Overview citation | Variable | 4-8% | Direct answer link -- high intent signal |
+
+**Use in brief:** When multiple keyword targets are available, prioritize by estimated CVR x search volume, not raw search volume alone. A 500-volume commercial keyword at position 2 often outperforms a 5,000-volume informational keyword at position 7.
+
 ### What the Research Gives You
 
 The research script outputs:
@@ -163,6 +176,7 @@ Google's AI retrieves content in ~500-token (~375 word) chunks. LLMs chunk at ~6
 - **The Contrast Statement:** Within the chunk, include explicit X vs. Y comparisons with numbers (e.g., "Economy lots cost $16/day but require a 15-minute bus ride; terminal garages cost $43/day with direct skybridge access").
 - **Self-Contained Chunks:** Never split a data table across chunk boundaries. Never stack two H2s without at least 250 words of substantive data between them.
 - **Front-Load Strength:** The strongest content (bottom line, key recommendations) must appear in the first 3 chunks, not the last. AI retrieval may never reach buried material.
+- **Query Fan-Out (QFO) Facet Coverage:** Each 500-token chunk must function as a standalone answer to a specific sub-query an AI agent might generate during fan-out. 40% of future AI-mediated traffic arrives via query fan-out -- AI breaking one user prompt into dozens of sub-queries. Design each chunk with a mental "facet label": this chunk answers "What does it cost?", this chunk answers "How far is the shuttle?", this chunk answers "When does it fill up?" Never combine two facets into one chunk. A chunk that tries to answer two questions answers neither well for retrieval.
 
 ---
 
@@ -220,6 +234,17 @@ Every page must include a section honestly telling the reader when this option i
 ### D. The Information Gain Test
 A page passes when it contains content that cannot be found by reading the top 10 Google results for the same query. Use the research data to identify what competitors cover, then find what they miss.
 
+### E. QDD Vulnerability Check -- High-Confidence Takeover Signal
+If the top 10 results for a keyword include UGC platforms (Instagram, Pinterest, Reddit, TikTok, Quora, YouTube) ranking for a commercial or informational intent query, Google is QDD-filling -- surfacing diverse sources because no single authority page dominates yet. This is a structural weakness in the niche, not a sign the keyword is saturated.
+
+**When research shows UGC in top 10:**
+- Flag as: `QDD_SIGNAL: HIGH_CONFIDENCE_TAKEOVER`
+- The niche has no dedicated authority page. A well-structured, operationally specific page can displace UGC results within a single index cycle.
+- Strategy: out-structure, not out-socialize. Build a page so complete that the UGC result becomes redundant for every user need.
+- Do not mimic UGC format. Structured data, tables, and entity signals beat informal UGC for commercial intent every time.
+
+**Rule:** Every competitive research run must check the SERP for UGC presence. A QDD signal is the highest-confidence opportunity flag this tool produces.
+
 ---
 
 ## 6. TECHNICAL MARKUP RULES
@@ -255,6 +280,17 @@ You are forbidden from inventing fake studies, statistics, or pricing. Use audit
 | `{{VERIFY}}` | Any specific price, rate, capacity, schedule, distance, or operational claim | `{{VERIFY: Garage daily rate $20 \| County Parking Rates PDF}}` |
 | `{{RESEARCH NEEDED}}` | A section that needs hard data you could not find or confirm | `{{RESEARCH NEEDED: Garage total capacity \| check master plan PDF}}` |
 | `{{SOURCE NEEDED}}` | A claim that needs a traceable citation before publish | `{{SOURCE NEEDED: shuttle frequency \| check ground transportation page}}` |
+
+### Forensic EMQ Check -- Competitor Optimization Ratio
+The standing rule (Section 3) is: never put exact match keyword in H2/H3/H4. That rule holds in most niches. Exception: if the top 3 ranking pages ALL have the exact match keyword in their H1, the niche is over-optimized and EMQ in H1 is now a required signal, not a penalty risk.
+
+**How to check:**
+1. From research data, inspect the H1 tags of the top 3 organic results
+2. If 2 out of 3 contain the exact target keyword verbatim in H1: flag as `EMQ_REQUIRED: true`
+3. If 1 or 0 contain EMQ: flag as `EMQ_REQUIRED: false` -- use entity-based headings per standard rules
+4. Tag the finding in the brief: `{{VERIFY: Competitor H1 EMQ status | research SERP data}}`
+
+**Rule:** Do not apply EMQ to H2/H3/H4 regardless of competitor behavior. The H1 exception applies only when competitor ratio is 2/3 or higher.
 
 ### Source Citation Rules:
 **Do not cite vaguely.** Never write "official airport website" or "government data."
@@ -452,13 +488,40 @@ Modern AI search agents (Gemini, ChatGPT, Perplexity) use Retrieval-Augmented Ge
 - Dead-end content (flat lists with no links) wastes crawl equity
 - Use research data to identify which hub/spoke pages competitors link between
 
+### Site-Level Entity Dominance -- The "Site Over Page" Rule
+
+The most exploitable weakness of high-DR generalist competitors (Ahrefs, NerdWallet, Forbes, Bankrate, etc.): they rank with a single page, not with a site architecturally built around the topic. A specialist niche site with lower DR will outrank a generalist page over time because Google rewards **site-level topicality** -- the signal that every page on the domain reinforces the same core topic cluster.
+
+**Niche Site Pivot Trigger:**
+When research shows that 2 of the top 3 ranking URLs are from generalist domains with no dedicated topical silo for the target keyword, flag as:
+`NICHE_PIVOT_OPPORTUNITY: true`
+
+This means the keyword is winnable by a specialist site even with a DR disadvantage. Recommend:
+1. Build a hub page + minimum 5 spoke pages covering every major sub-facet of the topic
+2. Every page on the site should reinforce the same topic cluster -- no off-topic content
+3. Internal link density should be high: each spoke links to hub and 2+ sibling spokes
+4. The goal is site-level entity dominance: Google associates the entire domain with the topic, not just one page
+
+**Site vs. Page Audit (add to every competitive research run):**
+| Competitor URL | Domain Type | Topical Silo Exists? | Vulnerability |
+|---|---|---|---|
+| [url] | Generalist / Specialist | Yes / No | High / Low |
+
+If 2/3 top results are generalist with no silo: `SITE_DOMINANCE_OPPORTUNITY: HIGH`
+
 ---
 
 ## 13. EXECUTION PROTOCOL
 
 When the user provides a target keyword and brief:
 
-1. **Research**: Run the data layer (combine discovery + script in one bash block):
+1. **Forensic SERP Audit** (run before writing):
+   - **QDD Check:** Are any top 10 results from UGC platforms (Instagram, Reddit, Pinterest, TikTok)? If yes, flag `QDD_SIGNAL: HIGH_CONFIDENCE_TAKEOVER` in the brief.
+   - **Site vs. Page Audit:** Are top 3 competitors generalist domains with no topical silo? If yes, flag `NICHE_PIVOT_OPPORTUNITY: HIGH`.
+   - **EMQ Ratio Check:** Do 2 of the top 3 H1 tags contain the exact match keyword? If yes, set `EMQ_REQUIRED: true`. Otherwise `EMQ_REQUIRED: false`.
+   - **CVR Estimate:** Apply Orcas One CVR modeling. What is the estimated conversion value of ranking position 1-3 for this keyword?
+
+2. **Research**: Run the data layer (combine discovery + script in one bash block):
    ```bash
    for dir in "." "${CLAUDE_PLUGIN_ROOT:-}" "$HOME/.claude/skills/seo-agi" "$HOME/.agents/skills/seo-agi" "$HOME/.codex/skills/seo-agi" "$HOME/seo-agi"; do [ -n "$dir" ] && [ -f "$dir/scripts/research.py" ] && SKILL_ROOT="$dir" && break; done; python3 "${SKILL_ROOT}/scripts/research.py" "<keyword>" --output=json
    ```
@@ -485,11 +548,11 @@ When the user provides a target keyword and brief:
    ```
    Confirm with user before writing unless they said "just write it."
 
-3. **Write**: Front-load the fast-scan summary matrix in the first 200 words. Build 500-token chunks using the Snippet Answer rule. Integrate the "Not For You" block.
+3. **Write**: Front-load the fast-scan summary matrix in the first 200 words. Build 500-token QFO facet chunks using the Snippet Answer rule. Apply `EMQ_REQUIRED` flag from the forensic audit. Integrate the "Not For You" block.
 
 4. **FAQ Section**: Include a dedicated FAQ section answering at least 3 People Also Ask questions from research data. Each Q&A pair must be wrapped in FAQPage schema. This is NOT optional.
 
-5. **Hub & Spoke Links**: If the page is a hub, list its spoke pages with links. If it's a spoke, link back to its hub. Include a "Related Pages" or "More Guides" section at the bottom with actual internal link targets.
+5. **Hub & Spoke Links**: If the page is a hub, list its spoke pages with links. If it's a spoke, link back to its hub. Include a "Related Pages" or "More Guides" section at the bottom with actual internal link targets. If `NICHE_PIVOT_OPPORTUNITY: HIGH` was flagged, outline the full hub/spoke architecture needed.
 
 6. **Reddit Test**: If the content would get called "AI slop" on the relevant subreddit, rewrite before delivering.
 
@@ -568,14 +631,33 @@ Run before every delivery. If any answer is NO, revise before delivering.
 | 32 | No banned 2026 content patterns present? | YES/NO |
 | 33 | Minimum 1,500 words of substantive content? | YES/NO |
 | 34 | FHASS compliance if applicable (extra E-E-A-T for financial/health/safety)? | YES/NO |
-| | **Score: X/34** | |
+| 35 | QDD check run -- UGC in top 10 flagged or cleared? | YES/NO |
+| 36 | Site vs. Page audit run -- competitor type identified? | YES/NO |
+| 37 | Forensic EMQ ratio checked -- EMQ_REQUIRED flag applied correctly? | YES/NO |
+| 38 | Each 500-token chunk targets a distinct QFO facet (sub-query)? | YES/NO |
+| | **Score: X/38** | |
 
-Pages scoring below 27/34 must be revised before delivery. Items marked NO must include a note on what needs to be fixed.
+Pages scoring below 30/38 must be revised before delivery. Items marked NO must include a note on what needs to be fixed.
 
 ### Spam Resilience Priority: Technical Relevance > Human Tone
 In the 2025-2026 spam update cycle, Google is prioritizing **technical relevance density** (factual accuracy, entity coverage, structured data completeness) over "human-sounding" prose. A page that is factually perfect, entity-rich, and operationally detailed but "sounds like AI" will outperform a page with warm, conversational tone but thin substance.
 
 **Rule:** Do NOT downgrade a page for sounding clinical or data-heavy if it passes the Reddit Test and Information Gain Test. Volume and relevance are currently outperforming "human-like" fluff. Prioritize adding more facts, more structure, and more verifiable claims over softening the language to sound more natural. The anti-spam algorithms are targeting thin content and keyword stuffing, not technically dense content.
+
+---
+
+## FORENSIC SEO PROTOCOLS (v1.5.0)
+
+These rules reflect the forensic audit framework from practitioner testing as of Q1 2026. Focus: site-level entity dominance over single-page optimization, and finding structural gaps in SERPs that generalist competitors cannot close.
+
+### The Core Shift: Site Over Page
+Traditional SEO optimized one page to rank. Forensic SEO identifies whether the competitor is ranking with a *page* or a *site*. A generalist site ranking with a single page -- even with high DR -- is structurally vulnerable to a niche specialist. The missing scale in their armor is site-level topicality. When you find that gap, the right move is not a better page. It's a better site architecture.
+
+### Query Fan-Out as Traffic Infrastructure
+AI-mediated search (Gemini, Perplexity, ChatGPT) breaks user prompts into sub-queries. A page that answers only the primary query will be retrieved for one facet. A page architectured across multiple QFO facets gets retrieved for multiple sub-queries from the same user session. This is multiplicative traffic, not additive.
+
+### QDD as Opportunity Radar
+Most SEOs see UGC in the SERP and assume the keyword is low-quality. The forensic read is the opposite: UGC is a QDD patch. Google put it there because no authority page exists yet. That is the highest-confidence takeover signal available.
 
 ---
 
