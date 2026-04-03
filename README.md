@@ -10,7 +10,9 @@ Most SEO tools tell you what's wrong with your site. This one writes the pages.
 
 `/seoagi "airport parking JFK"` pulls the current SERP, analyzes what's ranking, finds the gaps in their content, and writes you a complete page -- with the heading structure, depth, FAQ section, and schema markup that actually competes. Not thin content. Not keyword-stuffed filler. Pages backed by live data from the tools the pros use.
 
-**New in v1.5.0 -- Forensic SEO Protocols:**
+**New in v1.5.0 -- Forensic SEO + Structural Signals:**
+- **Semantic HTML Containers** -- generated HTML now uses `<article>`, `<section>`, `<aside>`, `<main>` instead of generic `<div>`. Google's crawler uses these elements to identify the Main Content zone for passage extraction and AI retrieval.
+- **Proof-Term Proximity** -- supporting evidence (numbers, entity names, operational details) must live in the same 500-token chunk as the H2 it supports. BERT evaluates within the passage window, not page-wide. Orphaned proof terms don't help.
 - **QDD Vulnerability Check** -- UGC (Instagram, Pinterest, Reddit) ranking for a commercial keyword is a structural gap, not a signal to avoid. Flag as HIGH_CONFIDENCE_TAKEOVER.
 - **Site Over Page Rule** -- generalist competitors ranking with one page are vulnerable to specialist site architecture. Niche Site Pivot trigger fires when 2/3 top results are generalist pages.
 - **Query Fan-Out (QFO) Facet Coverage** -- each 500-token chunk now targets a specific AI sub-query. 40% of future traffic arrives via AI fan-out from a single user prompt.
@@ -73,7 +75,7 @@ SEO-AGI:
   9.  Adds FAQ section from real PAA data
   10. Generates JSON-LD schema markup + inline RDFa entities
   11. Validates every claim against 2+ sources (Entity Consensus)
-  12. Validates against 28-point quality checklist
+  12. Validates against 38-point quality checklist
   13. Prints scorecard so you see exactly what passed
 ```
 
@@ -107,6 +109,14 @@ This isn't a wrapper around "write me an SEO article." The skill encodes strateg
 - Topical circle enforcement: stay inside your core service topic to avoid diluting AI authority signals
 - Recursive fact-checking: every claim validated against 2+ high-ranking sources for Entity Consensus
 - Spam resilience: technical relevance density prioritized over "human tone" in quality scoring
+
+**Structural & DOM Signals**
+- Semantic HTML containers: `<article>`, `<section>`, `<aside>`, `<main>` in generated HTML for Main Content zone identification
+- Proof-term proximity: supporting evidence must live in the same 500-token chunk as its H2 (BERT evaluates within passage window, not page-wide)
+- Query Fan-Out facet coverage: each chunk answers a distinct AI sub-query for multiplicative retrieval
+- Forensic EMQ check: conditionally require exact-match keyword in H1 based on competitor optimization ratio
+- QDD vulnerability detection: UGC in top 10 = HIGH_CONFIDENCE_TAKEOVER opportunity flag
+- Site-level entity dominance: niche site architecture beats generalist single-page competitors
 
 **Local / GBP Optimization**
 - Ask Maps & conversational GBP optimization (structured data that answers "who has X available?")
