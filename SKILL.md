@@ -249,6 +249,12 @@ If the top 10 results for a keyword include UGC platforms (Instagram, Pinterest,
 
 ## 6. TECHNICAL MARKUP RULES
 
+### Semantic HTML Containers (HTML output only)
+When generating HTML output, wrap the main article body in `<article>`, each logical section in `<section>`, and supplementary blocks (Not For You, callouts, sidebar context) in `<aside>`. Use `<main>` for the primary content area. Do not use `<div>` for content regions that have a semantic equivalent. Google's crawler uses these elements to identify the Main Content zone for passage ranking and AI extraction. A page built with semantic containers gives the crawler explicit signals about which content to weight highest.
+
+### Proof-Term Proximity
+The specific numbers, entity names, and operational details that support a claim must appear in the same 500-token chunk as the H2 they support -- not separated by other sections. A proof term three sections away from its heading does not strengthen that heading's embedding signal. BERT and Neural Matching evaluate relevance within the passage window, not page-wide. If the supporting evidence for a claim cannot fit in the same chunk, split the topic into two headings, each with its own evidence block. Never orphan a proof term from its context heading.
+
 ### The RDFa Hack
 LLMs often ignore JSON-LD in the header. Embed semantic data directly inline using RDFa or Microdata (`<span>` tags). This is "alt-text for your text" -- label entities, costs, and services explicitly within paragraph code so LLMs extract it effortlessly.
 
