@@ -2,6 +2,14 @@
 
 All notable changes to seo-agi are documented here.
 
+## [1.6.1] - 2026-04-28
+
+### Fixed
+- **Heading extraction returned empty for every competitor page.** DataForSEO's `on_page/content_parsing/live` endpoint returns headings inside `main_topic[]` and `secondary_topic[]` arrays (each with `h_title` and `level`), not as flat `h1`/`h2`/`h3` arrays. The old `_extract_headings` looked for keys that don't exist, so `Avg H2s: 0, Avg H3s: 0` for every research run regardless of competitor depth. Now correctly walks the topic tree.
+- **Word count returned 0 for every competitor.** `plain_text_word_count` is not a field DataForSEO returns. Now computes from `page_as_markdown` (preferred) with a fallback walking `primary_content[].text`.
+- **Title extraction returned empty.** `header.title` doesn't exist; replaced with markdown H1 detection plus a `main_topic[0].h_title` fallback.
+- Added regression tests covering the real API response shape so this can't silently break again.
+
 ## [1.6.0] - 2026-04-15
 
 ### Added

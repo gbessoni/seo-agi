@@ -212,7 +212,22 @@ class DataForSEOClient:
         return sorted(keywords, key=lambda x: x["volume"], reverse=True)
 
     def _extract_content(self, raw: dict) -> Optional[dict]:
-        """Extract content structure from on-page parsing."""
+        """Extract content structure from on-page parsing.
+
+        DataForSEO's content_parsing/live response shape (as of v0.1.20260420):
+
+            tasks[0].result[0].items[0]
+              .page_content
+                .header           -- {primary_content, secondary_content}
+                .main_topic[]     -- each: {h_title, main_title, level, primary_content[]}
+                .secondary_topic[] -- each: {h_title, level, ...}
+                .footer
+              .page_as_markdown   -- full rendered markdown of the page
+
+        There are no flat h1/h2/h3 arrays and no plain_text_word_count field.
+        Headings come from main_topic + secondary_topic items keyed by `level`.
+        Word count is computed from the markdown body.
+        """
         tasks = raw.get("tasks", [])
         if not tasks:
             return None
@@ -225,20 +240,64 @@ class DataForSEOClient:
         if not items:
             return None
 
-        page = items[0].get("page_content", {})
+        item = items[0]
+        page = item.get("page_content", {}) or {}
+        markdown = item.get("page_as_markdown", "") or ""
 
         return {
-            "title": page.get("header", {}).get("title", ""),
-            "word_count": page.get("plain_text_word_count", 0),
+            "title": self._extract_title(page, markdown),
+            "word_count": self._count_words(page, markdown),
             "headings": self._extract_headings(page),
-            "plain_text_size": page.get("plain_text_size", 0),
+            "plain_text_size": len(markdown),
         }
 
     @staticmethod
+    def _extract_title(page_content: dict, markdown: str) -> str:
+        """Best-effort title: first H1 in markdown, else first main_topic h_title."""
+        # Try markdown H1 first (most reliable)
+        for line in markdown.splitlines():
+            if line.startswith("# ") and not line.startswith("## "):
+                return line[2:].strip()
+        # Fallback: first main_topic h_title
+        for topic in page_content.get("main_topic") or []:
+            ht = topic.get("h_title")
+            if ht:
+                return ht
+        return ""
+
+    @staticmethod
+    def _count_words(page_content: dict, markdown: str) -> int:
+        """Count words from rendered markdown (headings + body text)."""
+        if markdown:
+            # Strip markdown syntax noise then split on whitespace
+            import re
+            text = re.sub(r"[`*_#>\[\]()!|-]+", " ", markdown)
+            return len([w for w in text.split() if w.strip()])
+        # Fallback: walk topic primary_content text
+        words = 0
+        for bucket in ("main_topic", "secondary_topic"):
+            for topic in page_content.get(bucket) or []:
+                for entry in topic.get("primary_content") or []:
+                    text = (entry or {}).get("text") or ""
+                    words += len(text.split())
+        return words
+
+    @staticmethod
     def _extract_headings(page_content: dict) -> list[str]:
-        """Pull heading tags from parsed content."""
-        headings = []
-        for level in ["h1", "h2", "h3"]:
-            for heading in page_content.get(level, []):
-                headings.append(f"{level.upper()}: {heading}")
+        """Pull heading tags from parsed content.
+
+        DataForSEO returns headings inside main_topic[] and secondary_topic[]
+        as objects with `h_title` (text) and `level` (int 1-6, where 2 = H2).
+        We surface them as 'H{level}: {text}' strings for the analyzer.
+        """
+        headings: list[str] = []
+        for bucket in ("main_topic", "secondary_topic"):
+            for topic in page_content.get(bucket) or []:
+                title = (topic.get("h_title") or "").strip()
+                if not title:
+                    continue
+                level = topic.get("level")
+                if not isinstance(level, int) or level < 1 or level > 6:
+                    level = 2  # safe default
+                headings.append(f"H{level}: {title}")
         return headings

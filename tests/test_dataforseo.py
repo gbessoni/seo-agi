@@ -121,16 +121,142 @@ def test_extract_keywords_with_data():
 
 
 def test_extract_headings():
+    """Headings come from main_topic[] + secondary_topic[] objects with
+    h_title (text) and level (int). DataForSEO does NOT return flat
+    h1/h2/h3 arrays. Regression test for empty-headings bug."""
     page_content = {
-        "h1": ["Main Title"],
-        "h2": ["Section One", "Section Two"],
-        "h3": ["Subsection A", "Subsection B"],
+        "main_topic": [
+            {"h_title": "Main Section", "level": 2, "primary_content": []},
+            {"h_title": "Subsection A", "level": 3, "primary_content": []},
+            {"h_title": "Page Title", "level": 1, "primary_content": []},
+        ],
+        "secondary_topic": [
+            {"h_title": "Sidebar Heading", "level": 2},
+            {"h_title": "", "level": 2},  # should be skipped
+            {"h_title": "No Level Default", "level": None},  # default to H2
+        ],
     }
     headings = DataForSEOClient._extract_headings(page_content)
-    assert "H1: Main Title" in headings
-    assert "H2: Section One" in headings
+    assert "H1: Page Title" in headings
+    assert "H2: Main Section" in headings
     assert "H3: Subsection A" in headings
+    assert "H2: Sidebar Heading" in headings
+    assert "H2: No Level Default" in headings
+    # Empty h_title is skipped
     assert len(headings) == 5
+
+
+def test_extract_headings_empty():
+    """Missing or null buckets must not crash."""
+    assert DataForSEOClient._extract_headings({}) == []
+    assert DataForSEOClient._extract_headings(
+        {"main_topic": None, "secondary_topic": None}
+    ) == []
+
+
+def test_count_words_from_markdown():
+    """Word count prefers page_as_markdown when available.
+    Exact count varies with how aggressively URL fragments survive the
+    syntax-strip regex; the contract is 'roughly the body word count',
+    not perfect markdown parsing."""
+    md = "# Title\n\nThis is a test of the markdown stripper here today."
+    count = DataForSEOClient._count_words({}, md)
+    assert 10 <= count <= 14, f"expected ~12 words, got {count}"
+
+
+def test_count_words_fallback_to_topics():
+    """When markdown is empty, walk primary_content text."""
+    page_content = {
+        "main_topic": [
+            {
+                "primary_content": [
+                    {"text": "First sentence has five words."},
+                    {"text": "Second has four words."},
+                ]
+            }
+        ],
+        "secondary_topic": [
+            {"primary_content": [{"text": "Three more words here."}]}
+        ],
+    }
+    # 5 + 4 + 4 = 13 words across all primary_content text fields
+    assert DataForSEOClient._count_words(page_content, "") == 13
+
+
+def test_extract_title_from_markdown():
+    md = "# The Real Title\n\n## A Subhead\n\nbody"
+    assert DataForSEOClient._extract_title({}, md) == "The Real Title"
+
+
+def test_extract_title_fallback_to_main_topic():
+    page_content = {"main_topic": [{"h_title": "Fallback Title", "level": 2}]}
+    assert (
+        DataForSEOClient._extract_title(page_content, "") == "Fallback Title"
+    )
+
+
+def test_extract_content_full_response():
+    """Integration shape test against a realistic content_parsing/live payload."""
+    raw = {
+        "tasks": [
+            {
+                "result": [
+                    {
+                        "items": [
+                            {
+                                "type": "page_content",
+                                "page_content": {
+                                    "header": {
+                                        "primary_content": [],
+                                        "secondary_content": [],
+                                    },
+                                    "main_topic": [
+                                        {
+                                            "h_title": "JFK Parking Guide",
+                                            "main_title": "JFK Parking Guide",
+                                            "level": 2,
+                                            "primary_content": [
+                                                {
+                                                    "text": "Long term parking at JFK costs about twenty dollars per day."
+                                                }
+                                            ],
+                                        },
+                                        {
+                                            "h_title": "Best Lots",
+                                            "level": 3,
+                                            "primary_content": [],
+                                        },
+                                    ],
+                                    "secondary_topic": [
+                                        {
+                                            "h_title": "FAQ",
+                                            "level": 2,
+                                            "primary_content": [],
+                                        }
+                                    ],
+                                    "footer": {},
+                                },
+                                "page_as_markdown": "# JFK Parking Guide\n\n## Rates\n\nLong term parking at JFK costs about twenty dollars per day.",
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+    client = DataForSEOClient("test", "test")
+    out = client._extract_content(raw)
+    assert out is not None
+    assert out["title"] == "JFK Parking Guide"
+    assert out["word_count"] >= 10
+    assert "H2: JFK Parking Guide" in out["headings"]
+    assert "H3: Best Lots" in out["headings"]
+    assert "H2: FAQ" in out["headings"]
+    # H2 + H3 counts the analyzer cares about
+    h2 = sum(1 for h in out["headings"] if h.startswith("H2:"))
+    h3 = sum(1 for h in out["headings"] if h.startswith("H3:"))
+    assert h2 == 2
+    assert h3 == 1
 
 
 def test_auth_header():
@@ -145,5 +271,11 @@ if __name__ == "__main__":
     test_extract_keywords_empty()
     test_extract_keywords_with_data()
     test_extract_headings()
+    test_extract_headings_empty()
+    test_count_words_from_markdown()
+    test_count_words_fallback_to_topics()
+    test_extract_title_from_markdown()
+    test_extract_title_fallback_to_main_topic()
+    test_extract_content_full_response()
     test_auth_header()
     print("All tests passed.")

@@ -1,6 +1,6 @@
 ---
 name: seobuild-onpage
-version: 1.6.0
+version: 1.6.1
 description: >
   Write SEO pages that rank on Google AND get cited by LLMs. Uses live SERP data,
   500-token chunk architecture, and the Reddit Test quality gate.
