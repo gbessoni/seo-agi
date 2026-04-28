@@ -2,6 +2,19 @@
 
 All notable changes to seo-agi are documented here.
 
+## [1.6.0] - 2026-04-15
+
+### Added
+- **Ideal Customer Persona (ICP)**: Page brief template now requires a defined ICP with demographics, psychographics, and specific pain points. Content maps to the actual reader, not a generic audience.
+- **Deep Entity History & Identity Tags**: Founding dates, generational ownership, and identity attributes (women-owned, veteran-owned) are now explicit entity signals in Section 4 SEAT Signals.
+- **The Self-Placement Rule**: Listicle guidance now explicitly allows ranking the client #1, provided the entry is objective with a specific use-case and honest tradeoffs.
+- **Keyword Cannibalization Governance**: Section 9 "Never Do" list now prohibits creating pages that compete with existing URLs for the same intent. Sales-focused duplicates get tagged with `noindex` recommendation.
+
+### Changed
+- Quality checklist expanded from 38 to 41 items (ICP alignment, entity history, cannibalization)
+- Minimum passing score raised to 33/41
+- Both brief templates (Page Brief Template + Execution Protocol) updated with ICP field
+
 ## [1.3.0] - 2026-03-25
 
 ### Added

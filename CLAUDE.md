@@ -2,7 +2,7 @@
 
 This is **seo-agi** -- a Claude Code skill for Generative Engine Optimization. It writes pages that rank on Google AND get cited by LLMs.
 
-This is not a generic SEO prompt. It enforces 500-token chunk architecture, Reddit Test quality gates, verification tags, "Not For You" blocks, and real competitive data from DataForSEO/Ahrefs/SEMRush/GSC.
+This is not a generic SEO prompt. It enforces 500-token chunk architecture, Reddit Test quality gates, verification tags, "Not For You" blocks, ICP-driven content targeting, and real competitive data from DataForSEO/Ahrefs/SEMRush/GSC.
 
 ## Structure
 
@@ -33,6 +33,10 @@ The SKILL.md is the living document. It contains:
 - 500-token chunk architecture
 - SEAT signals (Semantic + E-E-A-T + Entity/Knowledge Graph)
 - Quality gates: Reddit Test, Prove-It Details, Not For You, Information Gain Test
+- ICP (Ideal Customer Persona) requirement in every page brief
+- Deep Entity History & Identity Tags for local trust signals
+- Self-Placement Rule for listicles (objective #1 ranking with tradeoffs)
+- Keyword Cannibalization governance (noindex for overlapping intents)
 - Verification tagging system ({{VERIFY}}, {{RESEARCH NEEDED}}, {{SOURCE NEEDED}})
 - Vertical-specific instructions (airport/parking, local service, listicle, comparison)
 - LLM/AEO citation strategy

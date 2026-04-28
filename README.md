@@ -1,4 +1,4 @@
-# seobuild-onpage v1.5.0
+# seobuild-onpage v1.6.0
 
 ### One command. Competitive data in. Ranking pages out.
 
@@ -10,6 +10,13 @@ Most SEO tools tell you what's wrong with your site. This one writes the pages.
 
 `/seoagi "airport parking JFK"` pulls the current SERP, analyzes what's ranking, finds the gaps in their content, and writes you a complete page -- with the heading structure, depth, FAQ section, and schema markup that actually competes. Not thin content. Not keyword-stuffed filler. Pages backed by live data from the tools the pros use.
 
+**New in v1.6.0 -- ICP-Driven Content + Local Trust Signals:**
+- **Ideal Customer Persona (ICP) Integration** -- page briefs now require a defined ICP with demographics, psychographics, and specific pain points. Content maps to who it's actually for, not a generic audience.
+- **Deep Entity History & Identity Tags** -- founding dates, generational ownership, and identity attributes (women-owned, veteran-owned, family-owned) are now explicit entity signals. Maps directly to GBP tags and conversational AI filtering.
+- **The Self-Placement Rule** -- ranking the client #1 in a listicle is now an approved tactic, provided the entry is strictly objective with a defined use-case and honest tradeoffs.
+- **Keyword Cannibalization Governance** -- strict rule against creating pages that compete with existing URLs for the same intent. Sales-focused duplicates of informational pages get tagged with `noindex` recommendation.
+- **41-point quality checklist** adding ICP alignment, entity history, and cannibalization checks.
+
 **New in v1.5.0 -- Forensic SEO + Structural Signals:**
 - **Semantic HTML Containers** -- generated HTML now uses `<article>`, `<section>`, `<aside>`, `<main>` instead of generic `<div>`. Google's crawler uses these elements to identify the Main Content zone for passage extraction and AI retrieval.
 - **Proof-Term Proximity** -- supporting evidence (numbers, entity names, operational details) must live in the same 500-token chunk as the H2 it supports. BERT evaluates within the passage window, not page-wide. Orphaned proof terms don't help.
@@ -18,7 +25,7 @@ Most SEO tools tell you what's wrong with your site. This one writes the pages.
 - **Query Fan-Out (QFO) Facet Coverage** -- each 500-token chunk now targets a specific AI sub-query. 40% of future traffic arrives via AI fan-out from a single user prompt.
 - **Forensic EMQ Check** -- EMQ in H1 is conditionally required when 2/3 top competitors use it. Competitive context overrides the default entity-based heading rule.
 - **Orcas One CVR Modeling** -- keywords now ranked by estimated conversion value, not raw volume. Position 1 at 4.5% CVR vs position 7 at 2%.
-- **38-point quality checklist** with QDD, Site vs. Page, EMQ ratio, and QFO facet checks.
+- **41-point quality checklist** with QDD, Site vs. Page, EMQ ratio, and QFO facet checks.
 
 **New in v1.4.0 -- March 2026 Update Protocols:**
 - **NavBoost Geographic Click Relevance** -- pages now reranked by geographic click patterns. Local pages require neighborhood-level specificity, not just city names. Observed across SEO X community testing.
@@ -75,7 +82,7 @@ SEO-AGI:
   9.  Adds FAQ section from real PAA data
   10. Generates JSON-LD schema markup + inline RDFa entities
   11. Validates every claim against 2+ sources (Entity Consensus)
-  12. Validates against 38-point quality checklist
+  12. Validates against 41-point quality checklist
   13. Prints scorecard so you see exactly what passed
 ```
 
@@ -130,7 +137,7 @@ This isn't a wrapper around "write me an SEO article." The skill encodes strateg
 - "Not For You" block: honest section telling readers when this option is a bad fit (trust signal competitors skip)
 - Information Gain Test: every page must contain content not found in the top 10 Google results
 
-**The 38-point quality checklist every page runs through:**
+**The 41-point quality checklist every page runs through (selected highlights):**
 - Information gain over top 10 Google results? Check.
 - Reddit Test: would a practitioner upvote this? Check.
 - Core answer in first 150 words? Check.
@@ -164,8 +171,11 @@ This isn't a wrapper around "write me an SEO article." The skill encodes strateg
 - Site vs. Page audit -- competitor type identified? Check.
 - Forensic EMQ ratio checked -- applied correctly? Check.
 - Each 500-token chunk targets a distinct QFO facet? Check.
+- ICP defined in brief and content tailored to their pain points? Check.
+- Deep entity history / identity tags included where applicable? Check.
+- No keyword cannibalization with existing site URLs? Check.
 
-Pages scoring below 30/38 get flagged with specific items to fix. The scorecard is printed at the end of every output so you see exactly what passed.
+Pages scoring below 33/41 get flagged with specific items to fix. The scorecard is printed at the end of every output so you see exactly what passed.
 
 ---
 
