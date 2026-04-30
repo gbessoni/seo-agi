@@ -2,6 +2,18 @@
 
 All notable changes to seo-agi are documented here.
 
+## [1.7.0] - 2026-04-30
+
+### Added
+- **Tributary Trust Protocol** (Section 11A): off-page architecture for AEO entity validation. Defines Tier 1 owned assets (Google Sites, Medium, Subreddits, Google Sheets, LinkedIn) as tributaries that feed entity signal to the money page. Includes companion-content rules, network topology, derivation matrix, and sequencing requirements.
+- **Core Belief #7**: AEO Entity Validation via Owned Tier 1 Assets. Knowledge Graph inclusion and AI Overview impression share are now primary success signals, gated by off-page corroboration.
+- **`scripts/tributary_gen.py`**: CLI tool that reads a money page, extracts its 500-token chunks + entities + `{{VERIFY}}` tags, and outputs derived companion briefs to `~/Documents/SEO-AGI/tributaries/<slug>/` with a manifest mapping each draft to its host platform.
+- **Execution Protocol step 11**: tributary deployment is now mandatory for commercial-intent and local pages. All quality gates (Reddit Test, Information Gain, Prove-It, `{{VERIFY}}` resolution, Section 9 banned patterns, Entity Consensus) apply equally to off-page content -- thin tributaries net-harm the money page's entity signal.
+
+### Changed
+- CLAUDE.md directory structure now lists `scripts/tributary_gen.py`
+- CLAUDE.md framework features updated with Tributary Trust capability
+
 ## [1.6.1] - 2026-04-28
 
 ### Fixed

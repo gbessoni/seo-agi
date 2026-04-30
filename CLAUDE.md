@@ -12,6 +12,11 @@ SPEC.md               -- Technical architecture for the data layer
 scripts/
   research.py         -- CLI: SERP research via DataForSEO
   gsc_pull.py         -- CLI: Google Search Console data
+  tributary_gen.py    -- CLI: Generates Tier 1/Tier 2 companion content
+                         (Google Sites, Medium, Subreddit, Google Sheets,
+                         LinkedIn) topically derived from the money page's
+                         500-token chunk architecture. See SKILL.md
+                         "Tributary Trust Protocol" for the strategy.
   setup.py            -- Interactive first-run config
   lib/
     env.py            -- Config loader
@@ -37,6 +42,10 @@ The SKILL.md is the living document. It contains:
 - Deep Entity History & Identity Tags for local trust signals
 - Self-Placement Rule for listicles (objective #1 ranking with tradeoffs)
 - Keyword Cannibalization governance (noindex for overlapping intents)
+- **Tributary Trust Protocol**: AEO entity validation via owned Tier 1 assets
+  (Google Sites, Medium, Subreddits, Google Sheets, LinkedIn). Quality gates
+  apply equally to off-page content -- thin tributaries net-harm the money
+  page's entity signal. Generated via `scripts/tributary_gen.py`.
 - Verification tagging system ({{VERIFY}}, {{RESEARCH NEEDED}}, {{SOURCE NEEDED}})
 - Vertical-specific instructions (airport/parking, local service, listicle, comparison)
 - LLM/AEO citation strategy
